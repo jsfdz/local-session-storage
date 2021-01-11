@@ -24,7 +24,7 @@ if (!users) {
 
     let html = ''
 
-    html += `<table>
+    html += `<table border>
          <tr>
          <th>id</th>
          <th>Name</th>
