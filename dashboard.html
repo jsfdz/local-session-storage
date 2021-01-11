@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Welcome <span id="username"></span>, how do you feel today?</p>
+    <a href="#" id="logout">logout</a>
+
+    <h2>Generete Quiz</h2>
+    <div id="quiz-app">
+      <form name="form-quiz" onsubmit="event.preventDefault(), getQuestions()">
+        <input id="name" type="text" placeholder="Quiz Name" required />
+        <input id="quiz-count" type="number" value="10" min="1" max="50" />
+        <select id="select-category">
+          <option value="any">Any Category</option>
+        </select>
+        <select id="select-difficulty">
+          <option value="any">Any Difficulty</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <select id="select-type">
+          <option value="any">Any Type</option>
+          <option value="multiple">Multiple Choice</option>
+          <option value="boolean">True / False</option>
+        </select>
+        <input type="submit" value="save" />
+      </form>
+      <p id="error-message"></p>
+      <br />
+      <hr />
+      <div id="quizs-list"></div>
+    </div>
+
+    <script src="./assets/js/dash.js"></script>
+    <script src="./assets/js/fetch.js"></script>
+  </body>
+</html>

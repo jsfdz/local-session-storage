@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <nav><a href="/index.html">Home</a></nav>
+    </div>
+
+    <h1>Login</h1>
+    <div id="login">
+      <form name="form-login" onsubmit="event.preventDefault(), login()">
+        <input type="email" id="email" placeholder="Email" required />
+
+        <input type="password" id="pass" placeholder="Password" required />
+
+        <input type="submit" value="Login" />
+      </form>
+      <p>Don't have an account? <a href="/register.html">Sign Up!</a></p>
+    </div>
+
+    <script src="./assets/js/user.js"></script>
+  </body>
+</html>
