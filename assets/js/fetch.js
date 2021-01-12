@@ -1,18 +1,13 @@
-function getCategories() {
-    const url = 'https://opentdb.com/api_category.php'
-    fetch(url)
-        .then(res => res.json())
-        .then(data => setCategories(data.trivia_categories))
-}
+fetch('https://opentdb.com/api_category.php')
+    .then(res => res.json())
+    .then(data => ls.setItem('categories-db', JSON.stringify(data.trivia_categories)))
 
-function setCategories(arr) {
-    arr.forEach(category => {
-        const selectCategory = d.getElementById('select-category')
-        selectCategory.innerHTML += `<option value="${category.id}">${category.name}</option>`
-    })
-}
+let categories = JSON.parse(localStorage.getItem('categories-db')) || []
 
-getCategories()
+categories.forEach(category => {
+    const selectCategory = d.getElementById('select-category')
+    selectCategory.innerHTML += `<option value="${category.id}">${category.name}</option>`
+})
 
 function getQuestions() {
     const quizCount = d.getElementById('quiz-count').value,
@@ -45,6 +40,12 @@ const userID = ls.getItem('current-user-id')
 let quizzes = JSON.parse(localStorage.getItem('quizs')) || []
 
 function saveQuiz(quizs) {
+
+    if (updating) {
+        saveEdit()
+        return
+    }
+
     const name = d.getElementById('name').value
     let id = 1
 
@@ -105,14 +106,19 @@ function showQuizList() {
 }
 
 function deleteQuiz(id) {
-    const index = quizzes.findIndex(quiz => quiz.id == id)
+    const index = quizzes.findIndex(quiz => quiz.id === id)
     quizzes.splice(index, 1)
 
     showQuizList()
     ls.setItem('quizs', JSON.stringify(quizzes))
 }
 
+let updating = false,
+    updatingId = -1
+
 function editQuiz(id) {
+    updatingId = id
+
     const quiz = quizzes.find(quiz => quiz.id === id)
 
     let categoryInput = [],
@@ -127,7 +133,9 @@ function editQuiz(id) {
         getDifficulty = [...new Set(difficultyInput)],
         getType = [...new Set(typeInput)]
 
-    getCategory.length > 1 ? getCategory = 'any' : getCategory
+    const setCategory = categories.find(category => category.name === getCategory[0])
+
+    getCategory.length > 1 ? getCategory = 'any' : getCategory = setCategory.id
     getDifficulty.length > 1 ? getDifficulty = 'any' : getDifficulty[0]
     getType.length > 1 ? getType = 'any' : getType[0]
 
@@ -136,10 +144,22 @@ function editQuiz(id) {
     d.getElementById('select-category').value = getCategory
     d.getElementById('select-difficulty').value = getDifficulty
     d.getElementById('select-type').value = getType
+
+    updating = true
+
+    const btn = d.getElementById('save')
+    btn.value = 'update'
 }
 
 function saveEdit() {
+    const quiz = quizzes.find(quiz => quiz.id === updatingId);
+    console.log(quiz)
 
+    updating = false
+    updatingId = -1
+
+    const btn = d.getElementById('save')
+    btn.value = 'save'
 }
 
 showQuizList()
